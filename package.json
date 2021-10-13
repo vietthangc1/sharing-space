@@ -13,14 +13,5 @@
     "mongoose": "^6.0.10",
     "nodemon": "^2.0.13"
   },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vietthangc1/sharing-spaces.git"
-  },
-  "bugs": {
-    "url": "https://github.com/vietthangc1/sharing-spaces/issues"
-  },
-  "homepage": "https://github.com/vietthangc1/sharing-spaces#readme",
-  "description": ""
+  "devDependencies": {}
 }
