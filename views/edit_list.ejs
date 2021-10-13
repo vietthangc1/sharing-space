@@ -8,12 +8,12 @@
       <div class="row list-stories">
         <div class="col-2">
           <a href="/edit/<%= story['id'] %>"><i class="fas fa-edit"></i></a>
-          <a href="/delete/<%= story['id'] %>"><i class="fas fa-trash-alt"></i></a>
+          <a href="/delete/<%= story['_id'] %>"><i class="fas fa-trash-alt"></i></a>
         </div>
         <div class="col-10">
           <h2 class="heading"><%= story['title'] %></h2>
-          <p class="adjust"><span class= "created-at">Created at : <%= story.created_time_rendered() %></span> </p>
-          <p class="story-content"><%= story.contentView() %>... </p>
+          <p class="adjust created-at">Created at : <%= story.created_time.getFullYear()+'-'+(story.created_time.getMonth()+1)+'-'+story.created_time.getDate()+" "+story.created_time.getHours() + ":" + story.created_time.getMinutes() + ":" + story.created_time.getSeconds() %></p>
+          <p class="story-content"><%= story.content.slice(0,100) %>...</p>
         </div>
       </div>
       <% } %> 

@@ -18,8 +18,8 @@
       <div class="list-stories">
         <% for (i = th_list_stories.length - 1; i >= 0; i -= 1) { let story = th_list_stories[i] %> 
           <h2 class="heading"><%= story['title'] %></h2>
-          <p class="adjust created-at">Created at : <%= story.created_time_rendered() %></p>
-          <p class="story-content"><%= story.contentView() %>... <a href="/stories/<%= story['id'] %>">Read more</a></p>
+          <p class="adjust created-at">Created at : <%= story.created_time.getFullYear()+'-'+(story.created_time.getMonth()+1)+'-'+story.created_time.getDate()+" "+story.created_time.getHours() + ":" + story.created_time.getMinutes() + ":" + story.created_time.getSeconds() %></p>
+          <p class="story-content"><%= story.content.slice(0,100) %>... <a href="/stories/<%= story['id'] %>">Read more</a></p>
         <% } %> 
       </div>
 

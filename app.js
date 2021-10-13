@@ -1,22 +1,40 @@
 const express = require("express");
 const modul = require(__dirname + "/module.js");
 const app = express();
-const mongo = 
+const mongoose = require("mongoose")
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-let firstElement = modul.createFirstElement();
-let list_stories = [firstElement];
+mongoose.connect("mongodb://localhost:27017/sharing-spaces")
+
+const storySchema = mongoose.Schema({
+	title: String,
+	content: String,
+	created_time: Date,
+})
+
+const stories = mongoose.model('story', storySchema)
+
+const firstStory = new stories(modul.createFirstElement())
 
 // Homepage
 app.get("/", function (req, res) {
-	let render_dict = {
-		th_list_stories: list_stories,
-	};
-	res.render("index", render_dict);
+	stories.find({}, function (e, r) {
+		if (e) {
+			console.log("error!");
+		} else {
+			if (r.length == 0) {
+				firstStory.save()
+			}
+			let render_dict = {
+				th_list_stories: r,
+			};
+			res.render("index", render_dict);
+		}
+	})
 });
 
 // add story
@@ -25,36 +43,15 @@ app.get("/add", function (req, res) {
 });
 
 app.post("/add", function (req, res) {
+	let added = false
 	let storyAdded = req.body;
-	let element = {
-		id: modul.createId(),
+	let element = new stories({
 		title: storyAdded["th_title"],
 		content: storyAdded["th_content"],
 		created_time: new Date(),
-		created_time_rendered: function () {
-			return (
-				this.created_time.getFullYear() +
-				"-" +
-				(this.created_time.getMonth() + 1) +
-				"-" +
-				this.created_time.getDate() +
-				" " +
-				this.created_time.getHours() +
-				":" +
-				this.created_time.getMinutes() +
-				":" +
-				this.created_time.getSeconds()
-			);
-		},
-		contentView: function () {
-			return this.content.slice(0, 200);
-		},
-	};
-	list_stories.push(element);
-	res.redirect("/add_success");
-});
-
-app.get("/add_success", function (req, res) {
+	});
+	element.save()
+	added = true
 	res.render("add_success");
 });
 
@@ -68,63 +65,66 @@ app.get("/aboutme", function (req, res) {
 	res.render("aboutme");
 });
 
-// delete story
-
-app.get("/delete/:storyId", function (req, res) {
-	let id = req.params.storyId;
-	removeStorybyId(id);
-	res.redirect("/edit");
-});
-
 // edit story
 
 app.get("/edit", function (req, res) {
-	let render_dict = {
-		th_list_stories: list_stories,
-	};
-	res.render("edit_list", render_dict);
-});
-
-let story;
+	stories.find({}, function (e, r) {
+		if (e) {
+			console.log("error!");
+		} else {
+			let render_dict = {
+				th_list_stories: r,
+			};
+			res.render("edit_list", render_dict);
+		}
+	});
+})
 
 app.get("/edit/:storyId", function (req, res) {
 	let id = req.params.storyId;
-	story = getStorybyId(id);
-	res.render("edit_story", { th_story: story });
+	stories.findById(id, function (e, r) {
+		if (!e) {
+			res.render("edit_story", { th_story: r });
+		}
+	})
 });
 
 app.post("/edit", function (req, res) {
 	let storyEdited = req.body;
-  removeStorybyId(story['id']);
 	let element = {
-		id: modul.createId(),
 		title: storyEdited["th_title"],
 		content: storyEdited["th_content"],
 		created_time: new Date(),
-		created_time_rendered: function () {
-			return (
-				this.created_time.getFullYear() +
-				"-" +
-				(this.created_time.getMonth() + 1) +
-				"-" +
-				this.created_time.getDate() +
-				" " +
-				this.created_time.getHours() +
-				":" +
-				this.created_time.getMinutes() +
-				":" +
-				this.created_time.getSeconds()
-			);
-		},
-		contentView: function () {
-			return this.content.slice(0, 200);
-		},
 	};
-	list_stories.push(element);
+	id = storyEdited["_id"]
+	stories.findByIdAndUpdate(id, {$set: element}, {new:true}, function (e) {
+		if (e) {
+			console.log("update error!");
+		} else {
+			console.log("update success!");
+		}
+	})
+	res.redirect("/")
 });
 
+// delete story
+
+app.get("/delete/:storyId", function (req, res) {
+	let id = req.params.storyId;
+	stories.findByIdAndDelete(id, function (e) {
+		if (e) {
+			console.log("delete error!");
+		} else {
+			console.log("delete success!");
+		}
+	})
+	res.redirect("/edit");
+});
+
+
+
 // show full story
-app.get("/stories/:id", function(req, res) {
+app.get("/stories/:id", function (req, res) {
 	let art_id = req.params.id
 	let check = false
 	for (story of list_stories) {
@@ -134,7 +134,7 @@ app.get("/stories/:id", function(req, res) {
 		}
 	}
 	if (check) {
-		res.render("story", {th_story: story})
+		res.render("story", { th_story: story })
 	} else {
 		res.redirect("/")
 	}
