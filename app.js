@@ -13,20 +13,22 @@ mongoose.connect("mongodb://localhost:27017/sharing-spaces")
 const storySchema = mongoose.Schema({
 	title: String,
 	content: String,
-	created_time: Date,
+	created_time: Date
 })
-
 const stories = mongoose.model('story', storySchema)
-
 const firstStory = new stories(modul.createFirstElement())
 
 const aboutSchema = mongoose.Schema({
 	about: String
 })
-
 const about = mongoose.model('about', aboutSchema)
-
 const defaultAbout = new about(modul.createDefaultAbout())
+
+const contactSchema = mongoose.Schema({
+	topic: String,
+	message: String,
+})
+const contact = mongoose.model('contact', contactSchema)
 
 // Homepage
 app.get("/", function (req, res) {
@@ -78,6 +80,24 @@ app.post("/add", function (req, res) {
 app.get("/contactme", function (req, res) {
 	res.render("contactme");
 });
+
+app.post("/contactme", function (req, res) {
+	let button = req.body.btn
+	let topic = req.body.topic
+	let message = req.body.message
+	if (button == "email") {
+		let link = "mailto:pvthang1700@gmail.com?subject=" + topic + "&body=" + message
+		res.redirect(link)
+	}
+	else {
+		let element = new contact({
+			topic: req.body['topic'],
+			message: req.body['message'],
+		})
+		element.save()
+		res.render("contact_success")
+	}
+})
 
 app.get("/aboutme", function (req, res) {
 	res.render("aboutme");
