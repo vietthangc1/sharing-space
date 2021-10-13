@@ -4,7 +4,7 @@
   <div class="container">
     <div class="list-stories">
         <h2 class="heading"><%= th_story['title'] %></h2>
-        <p class="adjust created-at">Created at : <%= th_story.created_time_rendered() %></p>
+        <p class="adjust created-at">Created at : <%= th_story.created_time.getFullYear()+'-'+(th_story.created_time.getMonth()+1)+'-'+th_story.created_time.getDate()+" "+th_story.created_time.getHours() + ":" + th_story.created_time.getMinutes() + ":" + th_story.created_time.getSeconds() %></p>
         <p class="story-content"><%= th_story.content %> </p>
     </div>
 

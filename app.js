@@ -97,7 +97,7 @@ app.post("/edit", function (req, res) {
 		content: storyEdited["th_content"],
 		created_time: new Date(),
 	};
-	stories.findByIdAndUpdate(id, {$set: element}, function (e, r) {
+	stories.findByIdAndUpdate(id, { $set: element }, function (e, r) {
 		if (e) {
 			console.log("update error!");
 		}
@@ -119,25 +119,18 @@ app.get("/delete/:storyId", function (req, res) {
 	res.redirect("/edit");
 });
 
-
-
 // show full story
-app.get("/stories/:id", function (req, res) {
-	let art_id = req.params.id
-	let check = false
-	for (story of list_stories) {
-		if (art_id == story['id']) {
-			check = true
-			break
+app.get("/stories/:storyid", function (req, res) {
+	let id = req.params.storyid;
+	stories.findById(id, function (e, r) {
+		if (e) {
+			console.log("delete error!");
+			res.redirect("/")
+		} else {
+			res.render("story", { th_story: r })
 		}
-	}
-	if (check) {
-		res.render("story", { th_story: story })
-	} else {
-		res.redirect("/")
-	}
+	})
 })
-
 
 app.listen(process.env.PORT || 3000, function () {
 	console.log("Running server!");
