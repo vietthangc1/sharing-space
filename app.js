@@ -91,17 +91,15 @@ app.get("/edit/:storyId", function (req, res) {
 
 app.post("/edit", function (req, res) {
 	let storyEdited = req.body;
+	let id = storyEdited["th_id"]
 	let element = {
 		title: storyEdited["th_title"],
 		content: storyEdited["th_content"],
 		created_time: new Date(),
 	};
-	id = storyEdited["_id"]
-	stories.findByIdAndUpdate(id, {$set: element}, {new:true}, function (e) {
+	stories.findByIdAndUpdate(id, {$set: element}, function (e, r) {
 		if (e) {
 			console.log("update error!");
-		} else {
-			console.log("update success!");
 		}
 	})
 	res.redirect("/")
@@ -144,20 +142,3 @@ app.get("/stories/:id", function (req, res) {
 app.listen(process.env.PORT || 3000, function () {
 	console.log("Running server!");
 });
-
-function removeStorybyId(id) {
-	for (i = 0; i < list_stories.length; i++) {
-		if (list_stories[i]["id"] == id) {
-			list_stories.splice(i, 1);
-			break;
-		}
-	}
-}
-
-function getStorybyId(id) {
-	for (i = 0; i < list_stories.length; i++) {
-		if (list_stories[i]["id"] == id) {
-			return list_stories[i];
-		}
-	}
-}

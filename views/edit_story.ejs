@@ -6,6 +6,7 @@
     <hr>
     <div class="form">
       <form action="/edit" method="POST">
+        <input type="hidden" name="th_id" value="<%= th_story['_id'] %>">
         <div class="mb-3">
           <label for="title" class="form-label">What is your story about ?</label>
           <input type="text" value="<%= th_story['title'] %>" name="th_title" class="form-control" id="title" aria-describedby="inputTitle" required>
