@@ -1,0 +1,18 @@
+<%- include("header") %>
+
+<section class="first-section" id="editabout">
+  <div class="container">
+    <h2>Edit about part</h2>
+    <hr>
+    <div class="form">
+      <form action="/editabout" method="POST">
+        <div class="mb-3">
+          <textarea class="form-control" name="th_about" id="about" rows="10" required><%= th_about['about'] %></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Edit about</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%- include("footer") %>

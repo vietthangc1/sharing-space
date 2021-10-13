@@ -20,6 +20,14 @@ const stories = mongoose.model('story', storySchema)
 
 const firstStory = new stories(modul.createFirstElement())
 
+const aboutSchema = mongoose.Schema({
+	about: String
+})
+
+const about = mongoose.model('about', aboutSchema)
+
+const defaultAbout = new about(modul.createDefaultAbout())
+
 // Homepage
 app.get("/", function (req, res) {
 	stories.find({}, function (e, r) {
@@ -29,10 +37,20 @@ app.get("/", function (req, res) {
 			if (r.length == 0) {
 				firstStory.save()
 			}
-			let render_dict = {
-				th_list_stories: r,
-			};
-			res.render("index", render_dict);
+			about.find({}, function (e, r_about) {
+				if (e) {
+					console.log("about error");
+				} else {
+					if (r_about.length == 0) {
+						defaultAbout.save()
+					}
+					let render_dict = {
+						th_list_stories: r,
+						th_about: r_about[0]
+					}
+					res.render("index", render_dict);
+				}
+			})
 		}
 	})
 });
@@ -131,6 +149,30 @@ app.get("/stories/:storyid", function (req, res) {
 		}
 	})
 })
+
+// edit about
+app.get("/editabout", function(req, res) {
+	about.find({}, function (e, r) {
+		if (e) {
+			console.log("about error");
+		} else {
+			res.render("editabout", {th_about: r[0]})
+		}
+	})
+})
+
+app.post("/editabout", function(req, res) {
+	let content = req.body['th_about']
+	about.updateMany({}, {$set: {about: content}}, function(e) {
+		if (e) {
+			console.log("update about error!");
+		} else {
+			console.log("update about success!");
+			res.redirect("/")
+		}
+	})
+})
+
 
 app.listen(process.env.PORT || 3000, function () {
 	console.log("Running server!");
