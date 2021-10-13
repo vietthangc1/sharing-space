@@ -1,0 +1,14 @@
+<%- include("header") %> 
+
+ <section class="first-section" id="biography">
+  <div class="container">
+    <div class="list-stories">
+        <h2 class="heading"><%= th_story['title'] %></h2>
+        <p class="adjust created-at">Created at : <%= th_story.created_time_rendered() %></p>
+        <p class="story-content"><%= th_story.content %> </p>
+    </div>
+
+  </div>
+</section>
+
+<%- include("footer") %> 

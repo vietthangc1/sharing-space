@@ -1,0 +1,23 @@
+<%- include("header") %>
+
+<section class="first-section" id="add">
+  <div class="container">
+    <h2>My pleasure is listening to your story. Please share with us!</h2>
+    <hr>
+    <div class="form">
+      <form action="/add" method="POST">
+        <div class="mb-3">
+          <label for="title" class="form-label">What is your story about ?</label>
+          <input type="text" name="th_title" class="form-control" id="title" aria-describedby="inputTitle" required>
+        </div>
+        <div class="mb-3">
+          <label for="content" class="form-label">Please tell me details of your story</label>
+          <textarea class="form-control support-answer-textarea" name="th_content" id="content" rows="10" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send your story</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%- include("footer") %>

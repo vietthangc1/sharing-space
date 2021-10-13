@@ -1,0 +1,36 @@
+<%- include("header") %>
+
+<section class="first-section" id="contactme">
+    <div class="container contactme">
+        <p class="back-to-hp"><a href="/">Back to Homepage</a></p>
+        <h1>My Contact details</h1>
+        <table class="myinfo">
+            <tr>
+                <td>Email:</td>
+                <td>pvthang1700@gmail.com</td>
+            </tr>
+            <tr>
+                <td>Phone:</td>
+                <td>(0832) 166 106</td>
+            </tr>
+            <tr>
+                <td>Facebook:</td>
+                <td><a href="https://fb.com/pvt0107">pvt0107</a></td>
+            </tr>
+        </table>
+        <form action="mailto:pvthang1700@gmail.com" method="POST" enctype="text/plain">
+            <div id="name-form" class="form-input">
+                <label for="th_name">Your Name:</label> <br>
+                <input id="th_name" type="text" name="name" class="form-control form-contactme"> <br>
+            </div>
+            <div id="mes-form" class="form-input">
+                <label>Your message:</label> <br>
+                <textarea name="message" id="th_message" cols="30" rows="10" class="form-control form-contactme"></textarea>
+            </div>
+            <p></p>
+            <input type="submit" name="" id="btn-submit" value="Send your request!" class="btn btn-primary">
+        </form>
+    </div>
+</section>    
+    
+<%- include("footer") %>

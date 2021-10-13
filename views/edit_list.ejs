@@ -1,0 +1,24 @@
+<%- include("header") %> 
+
+  <section class="first-section" id="biography">
+    <div class="container">
+      <h1 class = "heading">Edit stories</h1>
+      <hr>
+      <% for (i = th_list_stories.length - 1; i >= 0; i -= 1) { let story = th_list_stories[i] %> 
+      <div class="row list-stories">
+        <div class="col-2">
+          <a href="/edit/<%= story['id'] %>"><i class="fas fa-edit"></i></a>
+          <a href="/delete/<%= story['id'] %>"><i class="fas fa-trash-alt"></i></a>
+        </div>
+        <div class="col-10">
+          <h2 class="heading"><%= story['title'] %></h2>
+          <p class="adjust"><span class= "created-at">Created at : <%= story.created_time_rendered() %></span> </p>
+          <p class="story-content"><%= story.contentView() %>... </p>
+        </div>
+      </div>
+      <% } %> 
+    </div>
+  </section>
+
+
+<%- include("footer")  %> 
