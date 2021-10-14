@@ -8,8 +8,7 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect("mongodb://localhost:27017/sharing-spaces")
-
+mongoose.connect("mongodb+srv://vietthangc1:f2bdx%40%2A-uLAZz%21f@cluster0.le7ea.mongodb.net/sharing-spaces")
 const storySchema = mongoose.Schema({
 	title: String,
 	content: String,
